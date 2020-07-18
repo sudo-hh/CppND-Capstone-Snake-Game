@@ -4,6 +4,8 @@
 #include <vector>
 #include "SDL.h"
 
+#define MAX_SPEED 0.140f  // Check if it's better to make it setteable
+
 class Snake {
  public:
   enum class Direction { kUp, kDown, kLeft, kRight };
@@ -12,12 +14,16 @@ class Snake {
       : grid_width(grid_width),
         grid_height(grid_height),
         head_x(grid_width / 2),
-        head_y(grid_height / 2) {}
+        head_y(grid_height / 2),
+        _maxSpeed(MAX_SPEED) {
+
+        }
 
   void Update();
 
   void GrowBody();
   bool SnakeCell(int x, int y);
+  float getMaxSpeed() { return this->_maxSpeed; };
 
   Direction direction = Direction::kUp;
 
@@ -35,6 +41,7 @@ class Snake {
   bool growing{false};
   int grid_width;
   int grid_height;
+  float _maxSpeed;
 };
 
 #endif

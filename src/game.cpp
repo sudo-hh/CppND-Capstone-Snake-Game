@@ -80,7 +80,10 @@ void Game::Update() {
     PlaceFood();
     // Grow snake and increase speed.
     snake.GrowBody();
-    snake.speed += 0.005;
+    if(snake.getMaxSpeed() > snake.speed) {
+      snake.speed += 0.005;
+    }
+    std::cout << "Current speed: " << snake.speed << std::endl;
   }
 }
 
