@@ -34,8 +34,62 @@ Renderer::Renderer(const std::size_t screen_width,
 }
 
 Renderer::~Renderer() {
+  SDL_DestroyRenderer(sdl_renderer);
   SDL_DestroyWindow(sdl_window);
   SDL_Quit();
+}
+
+Renderer::Renderer(Renderer &&source) {
+    std::cout << "MOVING (c’tor) Renderer instance " << &source << " to Renderer instance " << this << std::endl;
+
+    this->sdl_window = source.sdl_window;
+    this->sdl_renderer = source.sdl_renderer;
+
+    source.sdl_window = nullptr;
+    source.sdl_renderer = nullptr;
+
+    this->screen_width = source.screen_width;
+    this->screen_height = source.screen_height;
+    this->grid_width = source.grid_width;
+    this->grid_height = source.grid_height;
+
+    source.screen_width = 0;
+    source.screen_height = 0;
+    source.grid_width = 0;
+    source.grid_height = 0;
+}
+
+Renderer &Renderer::operator=(Renderer &&source) {
+    std::cout << "MOVING (assign) ChatBot instance " << &source << " to ChatBot instance " << this << std::endl;
+    if (this == &source) {
+        return *this;
+    }
+
+    if(this->sdl_window != nullptr) {
+      SDL_DestroyWindow(sdl_window);
+    }
+
+    if(this->sdl_renderer != nullptr) {
+      SDL_DestroyRenderer(sdl_renderer);
+    }
+
+    this->sdl_window = source.sdl_window;
+    this->sdl_renderer = source.sdl_renderer;
+
+    source.sdl_window = nullptr;
+    source.sdl_renderer = nullptr;
+
+    this->screen_width = source.screen_width;
+    this->screen_height = source.screen_height;
+    this->grid_width = source.grid_width;
+    this->grid_height = source.grid_height;
+
+    source.screen_width = 0;
+    source.screen_height = 0;
+    source.grid_width = 0;
+    source.grid_height = 0;
+
+    return *this;
 }
 
 void Renderer::Render(Snake const snake, SDL_Point const &food) {
