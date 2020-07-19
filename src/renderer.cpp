@@ -34,13 +34,19 @@ Renderer::Renderer(const std::size_t screen_width,
 }
 
 Renderer::~Renderer() {
-  SDL_DestroyRenderer(sdl_renderer);
-  SDL_DestroyWindow(sdl_window);
-  SDL_Quit();
+  if(nullptr != sdl_renderer && nullptr != sdl_window) {
+    std::cout << "~Renderer()" << this << std::endl;
+    SDL_DestroyRenderer(sdl_renderer);
+    SDL_DestroyWindow(sdl_window);
+    SDL_Quit();
+  }
 }
 
 Renderer::Renderer(Renderer &&source) {
     std::cout << "MOVING (c’tor) Renderer instance " << &source << " to Renderer instance " << this << std::endl;
+
+    std::cout << "source.sdl_window: " << source.sdl_window << std::endl;
+    std::cout << "source.sdl_renderer: " << source.sdl_renderer << std::endl;
 
     this->sdl_window = source.sdl_window;
     this->sdl_renderer = source.sdl_renderer;
@@ -57,6 +63,9 @@ Renderer::Renderer(Renderer &&source) {
     source.screen_height = 0;
     source.grid_width = 0;
     source.grid_height = 0;
+
+    std::cout << "this->sdl_window: " << this->sdl_window << std::endl;
+    std::cout << "this->sdl_renderer: " << this->sdl_renderer << std::endl;
 }
 
 Renderer &Renderer::operator=(Renderer &&source) {
@@ -67,10 +76,12 @@ Renderer &Renderer::operator=(Renderer &&source) {
 
     if(this->sdl_window != nullptr) {
       SDL_DestroyWindow(sdl_window);
+      std::cout << "SDL_DestroyWindow(sdl_window); // moving..." << std::endl;
     }
 
     if(this->sdl_renderer != nullptr) {
       SDL_DestroyRenderer(sdl_renderer);
+      std::cout << "SDL_DestroyRenderer(sdl_renderer); // moving..." << std::endl;
     }
 
     this->sdl_window = source.sdl_window;

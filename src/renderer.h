@@ -2,6 +2,7 @@
 #define RENDERER_H
 
 #include <vector>
+#include <memory>
 #include "SDL.h"
 #include "snake.h"
 
@@ -19,6 +20,7 @@ class Renderer {
   void UpdateWindowTitle(int score, int fps);
 
  private:
+  //std::unique_ptr<SDL_Window, void(*)(SDL_Window*)> sdl_window;
   SDL_Window *sdl_window;
   SDL_Renderer *sdl_renderer;
 
