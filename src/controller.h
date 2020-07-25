@@ -6,6 +6,8 @@
 class Controller {
  public:
   void HandleInput(bool &running, Snake &snake) const;
+  // TODO
+  void MenuController() const;
 
  private:
   void ChangeDirection(Snake &snake, Snake::Direction input,

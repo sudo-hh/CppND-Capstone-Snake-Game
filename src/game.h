@@ -3,14 +3,15 @@
 
 #include <random>
 #include <future>
-#include "SDL.h"
+#include <SDL.h>
+
 #include "controller.h"
 #include "renderer.h"
 #include "snake.h"
 
 class Game {
  public:
-  Game(std::size_t grid_width, std::size_t grid_height, Controller controller, Renderer renderer, std::size_t const target_frame_duration);
+  Game(std::size_t grid_width, std::size_t grid_height, Controller controller, std::unique_ptr<Renderer> renderer, std::size_t const target_frame_duration);
   void Run();
   int GetScore() const;
   int GetSize() const;
@@ -24,11 +25,11 @@ class Game {
   std::uniform_int_distribution<int> random_w;
   std::uniform_int_distribution<int> random_h;
   Controller _controller;
-  Renderer _renderer;
+  std::shared_ptr<Renderer> _renderer;
   std::size_t _target_frame_duration;
 
   int score;
-  void MoveSnake(std::promise<void> && prms);
+  void MoveSnake();
   void PlaceFood();
   void Update();
 };

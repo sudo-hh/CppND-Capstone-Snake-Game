@@ -1,8 +1,9 @@
 #include "game.h"
+//#include "menu.h"
 #include <iostream>
-#include "SDL.h"
+#include "SDL_ttf.h"
 
-Game::Game(std::size_t grid_width, std::size_t grid_height, Controller controller, Renderer renderer, std::size_t const target_frame_duration)
+Game::Game(std::size_t grid_width, std::size_t grid_height, Controller controller, std::unique_ptr<Renderer> renderer, std::size_t const target_frame_duration)
     : snake(grid_width, grid_height),
       engine(dev()),
       random_w(0, static_cast<int>(grid_width - 1)),
@@ -17,56 +18,20 @@ Game::Game(std::size_t grid_width, std::size_t grid_height, Controller controlle
 
 void Game::Run() {
 
-  std::promise<void> prms;
-  std::future<void> future = prms.get_future();
+  //std::promise<void> prms;
+  //std::future<void> future = prms.get_future();
   //std::thread t(&Game::MoveSnake, this, std::move(prms));
-
-  //future.get();
+  //future.wait();
   //std::cout << "Thread terminated!" << std::endl;
 
-  Uint32 title_timestamp = SDL_GetTicks();
-  Uint32 frame_start(0);
-  Uint32 frame_end(0);
-  Uint32 frame_duration(0);
-  int frame_count(0);
-  bool running = true;
-  std::cout << "Before While, game.cpp:36" << std::endl;
-  while (running) {
-    frame_start = SDL_GetTicks();
-
-    // Input, Update, Render - the main game loop.
-    _controller.HandleInput(running, snake);
-    //std::cout << "After handle, game.cpp:42" << std::endl;
-    Update();
-    //std::cout << "After update, game.cpp:44" << std::endl;
-    _renderer.Render(snake, food);
-    //std::cout << "After render, game.cpp:46" << std::endl;
-
-    frame_end = SDL_GetTicks();
-
-    // Keep track of how long each loop through the input/update/render cycle
-    // takes.
-    frame_count++;
-    frame_duration = frame_end - frame_start;
-
-    // After every second, update the window title.
-    if (frame_end - title_timestamp >= 1000) {
-      _renderer.UpdateWindowTitle(score, frame_count);
-      frame_count = 0;
-      title_timestamp = frame_end;
-    }
-
-    // If the time for this frame is too small (i.e. frame_duration is
-    // smaller than the target ms_per_frame), delay the loop to
-    // achieve the correct frame rate.
-    if (frame_duration < _target_frame_duration) {
-      SDL_Delay(_target_frame_duration - frame_duration);
-    }
-  }
+  MoveSnake();
 
 }
 
-void Game::MoveSnake(std::promise<void> && prms) {
+
+
+
+void Game::MoveSnake() {
   Uint32 title_timestamp = SDL_GetTicks();
   Uint32 frame_start(0);
   Uint32 frame_end(0);
@@ -82,7 +47,7 @@ void Game::MoveSnake(std::promise<void> && prms) {
     //std::cout << "After handle, game.cpp:42" << std::endl;
     Update();
     //std::cout << "After update, game.cpp:44" << std::endl;
-    _renderer.Render(snake, food);
+    _renderer.get()->Render(snake, food);
     //std::cout << "After render, game.cpp:46" << std::endl;
 
     frame_end = SDL_GetTicks();
@@ -94,7 +59,7 @@ void Game::MoveSnake(std::promise<void> && prms) {
 
     // After every second, update the window title.
     if (frame_end - title_timestamp >= 1000) {
-      _renderer.UpdateWindowTitle(score, frame_count);
+      _renderer.get()->UpdateWindowTitle(score, frame_count);
       frame_count = 0;
       title_timestamp = frame_end;
     }
@@ -106,7 +71,7 @@ void Game::MoveSnake(std::promise<void> && prms) {
       SDL_Delay(_target_frame_duration - frame_duration);
     }
   }
-  prms.set_value();
+  //prms.set_value();
 }
 
 void Game::PlaceFood() {

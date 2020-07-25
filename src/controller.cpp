@@ -41,3 +41,25 @@ void Controller::HandleInput(bool &running, Snake &snake) const {
     }
   }
 }
+/*
+void Controller::MenuController() const {
+  SDL_Event event;
+  while(SDL_PollEvent(&event))
+  {
+    switch(event.type)
+    {
+      case SDL_QUIT:
+        SDL_FreeSurface(menus[0]);
+        SDL_FreeSurface(menus[1]);
+        return 1;
+      case SDL_KEYDOWN:
+        if(event.key.keysym.sym == SDLK_ESCAPE)
+        {
+          SDL_FreeSurface(menus[0]);
+          SDL_FreeSurface(menus[1]);
+          //return 0;
+        }
+    }
+  }
+}
+*/
