@@ -52,3 +52,12 @@ This is the capstone project for Udacity's C++ Nanodegree [Udacity C++ Nanodegre
 | Derived class functions override virtual base class functions. | Yes. E.g. [menu_gameover.cpp:13](src/menu_gameover.cpp) and [menu_instructions.cpp:31](src/menu_instructions.cpp)
 | Templates generalize functions in the project. | Yes. E.g. [renderer.h:18](src/renderer.h)
 
+### Memory Management
+| Rubric point  | Location |
+| ------------- | ------------- |
+| The project makes use of references in function declarations.  |  Yes. E.g. [game.h:42](src/game.h) and [menu_instructions.cpp:69](src/menu_instructions.cpp)
+| The project uses destructors appropriately. | Yes. E.g. [menu.cpp:22](src/menu.cpp) is called automatically when menus are out of scope at the end of the game. Also the destructors for the SDL_render and SDL_window are addressed in [render.h:28](src/render.h)
+| The project uses scope / Resource Acquisition Is Initialization (RAII) where appropriate. | Yes. Along the whole project. See [main file](src/main.cpp) for example.
+| The project follows the Rule of 5. | Yes. E.g: [menu.h:18-21](src/menu.h)
+
+
