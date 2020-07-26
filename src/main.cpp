@@ -1,10 +1,15 @@
 #include <iostream>
 #include<memory>
+#include <fstream>
+#include <string>
+
 #include "controller.h"
 #include "game.h"
 #include "renderer.h"
 #include "SDL_ttf.h"
-#include "menu.h"
+#include "menu_instructions.h"
+#include "menu_gameover.h"
+#include "scores.h"
 
 int main() {
   constexpr std::size_t kFramesPerSecond{240};
@@ -14,18 +19,26 @@ int main() {
   constexpr std::size_t kGridWidth{32};
   constexpr std::size_t kGridHeight{32};
 
-  //Renderer renderer(kScreenWidth, kScreenHeight, kGridWidth, kGridHeight);
-  Menu menu;
-  menu.ShowMenu();
+  MenuInstr menu;
+  menu.showMenu();
+
   std::unique_ptr<Renderer> renderer = std::make_unique<Renderer>(kScreenWidth, kScreenHeight, kGridWidth, kGridHeight);
   Controller controller;
 
   Game game(kGridWidth, kGridHeight, controller, std::move(renderer), kMsPerFrame);
-  //std::thread t(&Game::Run, &game);
-  //t.join();
-  game.Run();
+
+  game.run();
+
+  Scores score;
+  score.saveScores(game.getScore());
+
+  std::vector<int> score_list = score.getScores();
+
+  MenuGameOver gameover;
+  gameover.showMenu(game.getScore(), score_list);
+
+
   std::cout << "Game has terminated successfully!\n";
-  std::cout << "Score: " << game.GetScore() << "\n";
-  std::cout << "Size: " << game.GetSize() << "\n";
+
   return 0;
 }
