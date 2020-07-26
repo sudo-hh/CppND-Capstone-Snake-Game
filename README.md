@@ -59,5 +59,13 @@ This is the capstone project for Udacity's C++ Nanodegree [Udacity C++ Nanodegre
 | The project uses destructors appropriately. | Yes. E.g. [menu.cpp:22](src/menu.cpp) is called automatically when menus are out of scope at the end of the game. Also the destructors for the SDL_render and SDL_window are addressed in [render.h:28](src/render.h)
 | The project uses scope / Resource Acquisition Is Initialization (RAII) where appropriate. | Yes. Along the whole project. See [main file](src/main.cpp) for example.
 | The project follows the Rule of 5. | Yes. E.g: [menu.h:18-21](src/menu.h)
+| The project uses move semantics to move data, instead of copying it, where possible. | Yes. E.g. [main.cpp:28](src/main.cpp) and many more...
+| The project uses smart pointers instead of raw pointers. | Yes. E.g. [main.cpp:25](src/main.cpp), [renderer.h:29-30](src/renderer.h). For some specific cases, a row pointer is used for compatibility with the SDL library, however no between user scopes.
 
-
+### Concurrency
+| Rubric point  | Location |
+| ------------- | ------------- |
+| The project uses multithreading. | Yes. E.g. [game.cpp:23,54,177](src/game.cpp)
+| A promise and future is used in the project. | Yes. E.g. [game.cpp:21,52,84,175](src/game.cpp)
+| A mutex or lock is used in the project. | Yes. E.g. [game.cpp:56,80,124...](src/game.cpp)
+| A condition variable is used in the project. | Yes. E.g. [game.cpp:58,81,125,135](src/game.cpp) for sync between moveSnake() and generateColor()
