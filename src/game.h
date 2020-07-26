@@ -2,32 +2,44 @@
 #define GAME_H
 
 #include <random>
-#include "SDL.h"
+#include <future>
+#include <SDL2/SDL.h>
+#include <mutex>
+
 #include "controller.h"
 #include "renderer.h"
 #include "snake.h"
 
 class Game {
  public:
-  Game(std::size_t grid_width, std::size_t grid_height);
-  void Run(Controller const &controller, Renderer renderer,
-           std::size_t target_frame_duration);
-  int GetScore() const;
-  int GetSize() const;
+  Game(std::size_t grid_width, std::size_t grid_height, Controller controller, std::unique_ptr<Renderer> renderer, std::size_t const target_frame_duration);
+  void run();
+  int getScore() const { return _score; }
+  int getSize() const { return _snake.size; }
 
  private:
-  Snake snake;
-  SDL_Point food;
+  Snake _snake;
+  SDL_Point _food;
 
-  std::random_device dev;
-  std::mt19937 engine;
-  std::uniform_int_distribution<int> random_w;
-  std::uniform_int_distribution<int> random_h;
+  std::random_device _dev;
+  std::mt19937 _engine;
+  std::uniform_int_distribution<int> _random_w;
+  std::uniform_int_distribution<int> _random_h;
+  Controller _controller;
+  std::shared_ptr<Renderer> _renderer;
+  std::size_t _target_frame_duration;
 
-  int score{0};
+  std::mutex _snakeMutex;
+  std::condition_variable _cond;
 
-  void PlaceFood();
-  void Update();
+  bool _ready;
+  bool _processed;
+
+  int _score;
+  void moveSnake();
+  void placeFood(std::promise<void> &&prms);
+  void generateColor(std::promise<Snake::Color> &&prms);
+  bool update(bool &running);
 };
 
 #endif
