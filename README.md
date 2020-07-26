@@ -2,6 +2,18 @@
 
 This is the capstone project for Udacity's C++ Nanodegree [Udacity C++ Nanodegree Program](https://www.udacity.com/course/c-plus-plus-nanodegree--nd213). The code for this repo was inspired by [this](https://codereview.stackexchange.com/questions/212296/snake-game-in-c-with-sdl) excellent StackOverflow post and set of responses.
 
+In this version, you will have first some basic instructions before starting the game.
+
+Once in the game, you will notice that our crazy snake will randomly change its color everytime a fruit is eaten.
+
+The color generation for the next event happens in a thread, which is synchronized by means of an unique mutex and a condition variable.
+
+If your snake eats itself, the game is over. You'll notice quite easy.
+
+Finally, you will get information about the maximun score registered and the score you just got.
+
+I hope you like it.
+
 <img src="snake_game.gif"/>
 
 ## Dependencies for Running Locally
